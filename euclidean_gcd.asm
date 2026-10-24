@@ -1,33 +1,29 @@
 
 section .text
-    global _start
+    global gcd
 
-
-
-_start:
-    mov eax, [num1]
-    mov ebx, [num2]
-
+gcd:
+    push ebp
+    mov ebp, esp
+    push ebx
+    
+    mov eax, [ebp + 8]; Num1
+    mov ebx, [ebp + 12]; Num2
 
 
 loop_gcd:
-    xor edx, edx
-    div ebx
+    test ebx, ebx; if EBX == 0
+    jz done
+
+    xor edx, edx; Clean EDX
+    div ebx; EAX/EBX
 
     mov eax, ebx
     mov ebx, edx
-    
-    
-    cmp ebx, 0
-    jne loop_gcd
+    jmp loop_gcd
 
 
-    mov ebx, eax
-    mov eax, 1
-    int 0x80
-
-
-
-section .data
-    num1 dd 120
-    num2 dd 72
+done:
+    pop ebx
+    pop ebp
+    ret; GCD in EAX
