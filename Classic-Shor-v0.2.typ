@@ -107,4 +107,4 @@ $"[Case 2.2:" 1 < p < N "]" &=> "gcd"(a^(r/2) + 1, N) = p "where" p > 1 \
     $N = p dot q = "gcd"(a^(r/2)+1,N) dot "gcd"(a^(r/2)-1,N)$
   )
 ]
-#v(12pt) 
+#v(12pt)  
