@@ -107,7 +107,7 @@ int main(void)
 {
     srand(time(NULL));
 
-    printf("Write a en odd square-free semiprime number: ");
+    printf("Write a odd square-free semiprime number: ");
     scanf("%llu", &N);
     factorize();
     printf("%llu and %llu",p, q);
