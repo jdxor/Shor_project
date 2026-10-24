@@ -5,12 +5,25 @@
 //ASM x86 function
 extern int gcd(int N, int a ); 
 
-unsigned long long N = 194;
+unsigned long long N = 1;
 unsigned long long p = 1;
 unsigned long long q = 1;
-unsigned long long pre_r = 0;
+unsigned long long r = 0;
 
 unsigned long long a = 0;
+
+unsigned long long int_pow(unsigned long long a, unsigned long long exp)
+{
+    unsigned long long result = 1;
+    
+    while (exp > 0)
+    {
+        result *=a;
+        exp--;
+    }
+    
+    return result;
+}
 
 // Russian Peasant Multiplication
 unsigned long long mod_mul(unsigned long long a, unsigned long long r, unsigned long long mod)
@@ -47,7 +60,7 @@ unsigned long long modular_pow(unsigned long long base, unsigned long long perio
     return result;
 }
 
-unsigned long long factorize(unsigned long long N, unsigned long long p, unsigned long long q)
+void factorize(void)
 {
     while (p == 1 || q == 1)
     {
@@ -59,28 +72,45 @@ unsigned long long factorize(unsigned long long N, unsigned long long p, unsigne
             a = rand() % (N - 2) + 2;
         }
       
-        for (int r = 1; r < N + 1; r++)
+        for (unsigned long long pre_r = 1; pre_r < N + 1; pre_r++)
         {
-            if (modular_pow(a, r, N) == 1)
+            if (modular_pow(a, pre_r, N) == 1)
             {
-                pre_r = r;
+                r = pre_r;
 
                 break;
             }
-        }  
-        p = 2;
-        q = 2;
+        }
+   
+        if (r % 2 != 0)
+        {
+            continue;
+        }
+
+        int pre_p  = int_pow(a, r/2) + 1;
+        
+        if (pre_p % N == 0)
+        {
+            continue;
+        }
+        
+        p = gcd(pre_p, N);
+        
+        int pre_q  = int_pow(a, r/2) - 1;
+        q = gcd(pre_q, N);  
+    
     }
     
-    return (int)pre_r;
 }
 
 int main(void)
 {
     srand(time(NULL));
 
-    int result = factorize(N, p, q);
-    printf("%d and %d",result, a);
+    printf("Write a en odd square-free semiprime number: ");
+    scanf("%llu", &N);
+    factorize();
+    printf("%llu and %llu",p, q);
 
     return 0;
 }
