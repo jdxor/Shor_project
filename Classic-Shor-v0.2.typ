@@ -15,7 +15,7 @@
 #align(center)[
   = Classic Shor Algorithm
   #v(-4pt)
-  #text(size: 10pt, fill: luma(120))[Version 0.1 Under Correction]
+  #text(size: 10pt, fill: luma(120))[Version 0.2 Under Correction]
 ]
 #v(12pt)
 
@@ -25,12 +25,19 @@
 
 $N,p,q,k in NN$
 
+$N = p dot q "where" "gcd"(p,q) = 1$
+ 
+$p,q in PP$
+
+$a in NN "where" 2 <= a < N$
+
 $r in (NN\\{0,1})$
 
-$N = p dot q "where" "gcd"(p,q) = 1$
-#v(12pt) 
+#v(12pt)
+
 $"gcd"(N, a) := cases(
-  d > 1 => N = d dot k => a^r equiv.not 1 (mod d dot k) & quad text("[Success]"),
+  d = N => a^r equiv.not 1 (mod d) & quad text("[Failure]"),
+  N > d > 1 => N = d dot k "where" k = N/d => a^r equiv.not 1 (mod d dot k) & quad text("[Success]"),
   d = 1 => N = d dot N => a^r equiv 1 (mod N) & quad text("[Proceed]")
 )$
 #v(12pt) 
@@ -45,8 +52,8 @@ $"gcd"(N, a) := cases(
   )
 ]
 #v(12pt) 
-$r equiv x (mod 2) &=> r = 2q + x "where" q=floor(r/2) in ZZ "and" x in {0,1} \
-&=> x = r - 2q \
+$r equiv x (mod 2) &=> r = 2m + x "where" m=floor(r/2) in ZZ "and" x in {0,1} \
+&=> x = r - 2m \
 &=> x := cases(
   x=1 && "[Case 1: r is Odd]", 
   x=0 && "[Case 2: r is Even]"
@@ -77,17 +84,18 @@ $"gcd"(a^(r/2) + 1, N) := cases(
 )$
 
 $"[Case 2.1:" q = N "]" &=> a^(r/2) - 1 = k dot N  "where" k in NN \
-&=>N =cases(
-  "gcd"(a^(r/2)-1, N) &=> "gcd"(a^(r/2)+1, N) = 1,
-  "gcd"(a^(r/2)+1, N) &=> "gcd"(a^(r/2)-1, N) = 1
+&=>cases(
+  N = "gcd"(a^(r/2)-1, N) &=> "gcd"(a^(r/2)+1, N) = 1,
+  N = "gcd"(a^(r/2)+1, N) &=> "gcd"(a^(r/2)-1, N) = 1
 )\ 
 &=>text("[Failure]")$
 
 $"[Case 2.2:" 1 < p < N "]" &=> "gcd"(a^(r/2) + 1, N) = p "where" p > 1 \
 &=> "gcd"(a^(r/2) - 1, N) = q "where" q > 1 \ 
-&=> a^(r/2) equiv.not plus.minus 1\
+&=> a^(r/2) equiv.not 1\
+&=> a^(r/2) equiv.not minus 1\
 &=> "gcd"(a^(r/2) + 1, N) dot "gcd"(a^(r/2) - 1, N) = N \ 
-&=>text("[Succcess]")$
+&=>text("[Success]")$
 #v(12pt) 
 #align(center)[
   #block(
